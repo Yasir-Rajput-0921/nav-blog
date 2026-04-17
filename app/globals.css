@@ -1,26 +1,73 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@keyframes site-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@media (prefers-reduced-motion: no-preference) {
+  .animate-site-main-in {
+    animation: site-fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.06s both;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  .post-grid-fade > article {
+    animation: site-fade-up 0.48s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .post-grid-fade > article:nth-child(1) {
+    animation-delay: 0.04s;
+  }
+  .post-grid-fade > article:nth-child(2) {
+    animation-delay: 0.08s;
+  }
+  .post-grid-fade > article:nth-child(3) {
+    animation-delay: 0.12s;
+  }
+  .post-grid-fade > article:nth-child(4) {
+    animation-delay: 0.16s;
+  }
+  .post-grid-fade > article:nth-child(5) {
+    animation-delay: 0.2s;
+  }
+  .post-grid-fade > article:nth-child(6) {
+    animation-delay: 0.24s;
+  }
+  .post-grid-fade > article:nth-child(7) {
+    animation-delay: 0.28s;
+  }
+  .post-grid-fade > article:nth-child(8) {
+    animation-delay: 0.32s;
+  }
+  .post-grid-fade > article:nth-child(9) {
+    animation-delay: 0.36s;
+  }
+  .post-grid-fade > article:nth-child(10) {
+    animation-delay: 0.4s;
+  }
+  .post-grid-fade > article:nth-child(11) {
+    animation-delay: 0.44s;
+  }
+  .post-grid-fade > article:nth-child(12) {
+    animation-delay: 0.48s;
+  }
+  .post-grid-fade > article:nth-child(13) {
+    animation-delay: 0.52s;
+  }
+  .post-grid-fade > article:nth-child(14) {
+    animation-delay: 0.56s;
+  }
+  .post-grid-fade > article:nth-child(15) {
+    animation-delay: 0.6s;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), "Segoe UI", Arial, sans-serif;
+  background: #f8fafc;
 }

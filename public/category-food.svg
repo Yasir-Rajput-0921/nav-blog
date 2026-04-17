@@ -1,0 +1,17 @@
+<svg width="1200" height="700" viewBox="0 0 1200 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgFood" x1="160" y1="70" x2="1040" y2="640" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FEF3C7"/>
+      <stop offset="1" stop-color="#FDE68A"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="700" fill="url(#bgFood)"/>
+  <circle cx="230" cy="140" r="80" fill="#F59E0B" opacity="0.65"/>
+  <circle cx="980" cy="170" r="95" fill="#FBBF24" opacity="0.75"/>
+  <ellipse cx="600" cy="400" rx="290" ry="170" fill="#FFF7ED" stroke="#D97706" stroke-width="5"/>
+  <ellipse cx="600" cy="400" rx="210" ry="110" fill="#FDBA74"/>
+  <circle cx="530" cy="390" r="24" fill="#EA580C"/>
+  <circle cx="600" cy="430" r="20" fill="#EF4444"/>
+  <circle cx="670" cy="375" r="22" fill="#F97316"/>
+  <rect x="410" y="540" width="380" height="22" rx="11" fill="#F59E0B" opacity="0.85"/>
+</svg>
