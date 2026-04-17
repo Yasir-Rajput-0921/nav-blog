@@ -1,14 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { getBlogPostCoverPlaceholderText, getPostUrl, hasBlogPostCoverImage } from "@/data/posts";
-import { BlogPost } from "@/types/post";
+import { sanityCdnSrc } from "@/lib/blog/sanity-cdn-image";
+import { getBlogPostCoverPlaceholderText, getPostUrl, hasBlogPostCoverImage } from "@/lib/blog/post-helpers";
+import type { BlogPost } from "@/types/post";
 
 interface PostCardProps {
   post: BlogPost;
+  /** First card in a grid: improves LCP when the cover is above the fold. */
+  imagePriority?: boolean;
 }
 
-export function PostCard({ post }: PostCardProps) {
+export function PostCard(props: PostCardProps) {
+  const { post, imagePriority = false } = props;
   const postUrl = getPostUrl(post);
   const showCoverImage = hasBlogPostCoverImage(post);
   const coverImageAlt = post.imageAlt.trim() !== "" ? post.imageAlt : post.title;
@@ -25,12 +29,13 @@ export function PostCard({ post }: PostCardProps) {
         {showCoverImage ? (
           <div className="relative h-44 w-full">
             <Image
-              src={post.imageSrc}
+              src={sanityCdnSrc(post.imageSrc, 720)}
               alt={coverImageAlt}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover"
-              priority={false}
+              priority={imagePriority}
+              loading={imagePriority ? "eager" : "lazy"}
             />
           </div>
         ) : null}

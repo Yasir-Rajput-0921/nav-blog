@@ -1,16 +1,13 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { PostCard } from "@/components/post-card";
-import {
-  filterPosts,
-  getAllCategories,
-  getCategoryDescription,
-  getCategoryLabel,
-  getSafeCategory,
-} from "@/data/posts";
-import { PostCategory } from "@/types/post";
+import { buildCategorySlugSet } from "@/lib/blog/category-slugs";
+import { getSafeCategorySlug } from "@/lib/blog/post-helpers";
+import { getBlogCategories, getBlogPostsByCategorySlug } from "@/lib/blog/sanity-data";
+import { fetchCategorySlugsForStaticParams } from "@/sanity/lib/build-static-params";
 
 export const dynamicParams = true;
 
@@ -18,63 +15,71 @@ interface CategoryPageProps {
   params: Promise<{ category: string }>;
 }
 
-function getValidatedCategory(category: string): PostCategory | undefined {
-  return getSafeCategory(category);
-}
-
 export async function generateStaticParams() {
-  return getAllCategories().map(function mapCategory(category) {
-    return { category };
+  const slugs = await fetchCategorySlugsForStaticParams();
+  return slugs.map(function mapCategory(slug) {
+    return { category: slug };
   });
 }
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
   const { category } = await params;
-  const safeCategory = getSafeCategory(category);
+  const categories = await getBlogCategories();
+  const categorySlugSet = buildCategorySlugSet(categories);
+  const safeCategory = getSafeCategorySlug(category, categorySlugSet);
+  const meta = categories.find(function matchSlug(item) {
+    return item.slug === safeCategory;
+  });
 
-  if (!safeCategory) {
+  if (!safeCategory || !meta) {
     return {
       title: "Category Not Found | Blog",
       description: "The requested category does not exist.",
     };
   }
 
-  const label = getCategoryLabel(safeCategory);
-  const description = getCategoryDescription(safeCategory);
-
   return {
-    title: `${label} Posts | Blog`,
-    description,
+    title: `${meta.title} Posts | Blog`,
+    description: meta.description,
     alternates: {
       canonical: `/${safeCategory}`,
     },
     openGraph: {
-      title: `${label} Posts | Blog`,
-      description,
+      title: `${meta.title} Posts | Blog`,
+      description: meta.description,
       url: `/${safeCategory}`,
       type: "website",
     },
     twitter: {
-      title: `${label} Posts | Blog`,
-      description,
+      title: `${meta.title} Posts | Blog`,
+      description: meta.description,
     },
   };
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category } = await params;
-  const safeCategory = getValidatedCategory(category);
-  const posts = safeCategory ? filterPosts(safeCategory) : [];
+  const categories = await getBlogCategories();
+  const categorySlugSet = buildCategorySlugSet(categories);
+  const safeCategory = getSafeCategorySlug(category, categorySlugSet);
+
+  if (!safeCategory) {
+    notFound();
+  }
+
+  const posts = await getBlogPostsByCategorySlug(safeCategory);
   const showNoPostsState = posts.length === 0;
+  const categoryMeta = categories.find(function findMeta(item) {
+    return item.slug === safeCategory;
+  });
+  const categoryTitle = categoryMeta?.title ?? safeCategory;
 
   return (
     <div className="min-h-screen flex flex-col gap-5 pb-8">
-      <SiteHeader activeCategory={safeCategory} />
+      <SiteHeader categories={categories} activeCategorySlug={safeCategory} />
 
       <main className="mx-auto w-[min(1100px,92%)] pb-10 animate-site-main-in">
-        {safeCategory && !showNoPostsState ? (
-          <h1 className="sr-only">{`${getCategoryLabel(safeCategory)} posts`}</h1>
-        ) : null}
+        {!showNoPostsState ? <h1 className="sr-only">{`${categoryTitle} posts`}</h1> : null}
         {showNoPostsState ? (
           <section className="rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm">
             <h1 className="text-2xl font-bold text-slate-900">No posts found</h1>
@@ -84,8 +89,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           </section>
         ) : (
           <section className="post-grid-fade grid items-start gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {posts.map(function renderPost(post) {
-              return <PostCard key={post.id} post={post} />;
+            {posts.map(function renderPost(post, index) {
+              return <PostCard key={post._id} post={post} imagePriority={index === 0} />;
             })}
           </section>
         )}
