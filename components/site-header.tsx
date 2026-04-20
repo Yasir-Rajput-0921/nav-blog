@@ -1,4 +1,8 @@
 import Link from "next/link";
+import { SITE_SETTINGS_QUERY } from "@/sanity/lib/queries";
+import { client } from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
+import Image from "next/image";
 
 import type { BlogCategory } from "@/types/post";
 
@@ -61,10 +65,11 @@ function NavPillLink(props: NavPillLinkProps) {
   );
 }
 
-export function SiteHeader(props: SiteHeaderProps) {
+export async function SiteHeader(props: SiteHeaderProps) {
   const { categories, activeCategorySlug } = props;
   const navLinks = buildNavLinks(categories);
 
+  const settings = await client.fetch(SITE_SETTINGS_QUERY);
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200/90 bg-slate-50/90 backdrop-blur-md supports-[backdrop-filter]:bg-slate-50/75">
       <div className="mx-auto flex w-[min(1100px,92%)] flex-col gap-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:py-5">
@@ -72,7 +77,19 @@ export function SiteHeader(props: SiteHeaderProps) {
           href="/"
           className="w-fit rounded-lg text-2xl font-extrabold tracking-tight text-slate-900 transition-[color,transform] duration-200 ease-out hover:text-blue-700 motion-reduce:hover:scale-100 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50 sm:text-3xl"
         >
-          Blog
+          {settings?.logo ? (
+            <Image
+              src={urlFor(settings.logo).width(150).height(50).url()}
+              alt={settings?.siteName || "Blog"}
+              width={150}
+              height={50}
+              className="object-contain"
+            />
+          ) : (
+            <span className="text-2xl font-extrabold tracking-tight text-slate-900 hover:text-blue-700 sm:text-3xl">
+              {settings?.siteName || "Blog"}
+            </span>
+          )}
         </Link>
 
         <nav

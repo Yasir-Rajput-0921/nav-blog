@@ -1,5 +1,12 @@
 import { defineQuery } from "next-sanity";
 
+export const SITE_SETTINGS_QUERY = defineQuery(`
+  *[_type == "siteSettings"][0]{
+    logo,
+    siteName
+  }
+`);
+
 export const CATEGORIES_QUERY = defineQuery(`
   *[_type == "category" && defined(slug.current)] | order(title asc) {
     _id,
