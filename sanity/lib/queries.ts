@@ -12,7 +12,7 @@ export const CATEGORIES_QUERY = defineQuery(`
     _id,
     title,
     "slug": slug.current,
-    description
+    "description": coalesce(description, "")
   }
 `);
 
