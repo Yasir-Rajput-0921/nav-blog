@@ -29,13 +29,13 @@ export function AuthButton() {
         <div className="flex items-center gap-2">
       <button
         onClick={() => signIn("google")}
-        className="rounded-xl border border-blue-600 px-4 py-2 text-sm font-semibold text-blue-600 hover:bg-blue-50"
+        className="rounded-xl border border-blue-600 px-4 py-2 text-sm font-semibold text-blue-600 hover:bg-blue-50 cursor-pointer"
       >
         Login
       </button>
       <button
         onClick={() => signIn("google")}
-        className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+        className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 cursor-pointer"
       >
         Sign Up
       </button>
