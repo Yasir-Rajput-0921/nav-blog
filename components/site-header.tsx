@@ -3,6 +3,7 @@ import { SITE_SETTINGS_QUERY } from "@/sanity/lib/queries";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
+import AuthButtons from "./AuthButtons";
 
 import type { BlogCategory } from "@/types/post";
 
@@ -101,6 +102,7 @@ export async function SiteHeader(props: SiteHeaderProps) {
             return <NavPillLink key={link.key} link={link} isActive={active} />;
           })}
         </nav>
+        <AuthButtons />
       </div>
     </header>
   );
