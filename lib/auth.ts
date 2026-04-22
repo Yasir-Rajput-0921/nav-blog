@@ -45,18 +45,16 @@ export const authOptions: NextAuthOptions = {
       const intent = cookieStore.get("oauth_intent")?.value;
 
       if (intent === "login") {
-        const expected = cookieStore.get("oauth_login_email")?.value;
-        if (!expected || normalizeEmail(expected) !== googleEmail) {
-          return false;
-        }
         if (!isRegisteredEmail(googleEmail)) {
-          return false;
+          return "/login?error=SignupRequired";
         }
-        registerEmail(user.email);
         return true;
       }
 
       if (intent === "signup") {
+        if (isRegisteredEmail(googleEmail)) {
+          return "/signup?error=EmailExists";
+        }
         registerEmail(user.email);
         return true;
       }

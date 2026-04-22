@@ -45,7 +45,6 @@ export default function AuthButtons() {
                     <span className="text-sm font-semibold text-slate-700 hidden sm:block">
                         {session.user?.name}
                     </span>
-                    <span className="text-slate-400 text-xs">▼</span>
                 </button>
 
                 {dropdownOpen && (

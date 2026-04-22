@@ -16,6 +16,7 @@ export default async function LoginPage(props: LoginPageProps) {
 
   const searchParams = await props.searchParams;
   const oauthDenied = searchParams.error === "AccessDenied";
+  const signupRequired = searchParams.error === "SignupRequired";
 
-  return <LoginForm oauthDenied={oauthDenied} />;
+  return <LoginForm oauthDenied={oauthDenied} signupRequired={signupRequired} />;
 }

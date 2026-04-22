@@ -1,9 +1,4 @@
 import { NextResponse } from "next/server";
-import {
-  isRegisteredEmail,
-  normalizeEmail,
-} from "@/lib/registered-users";
-
 const COOKIE_OPTS = {
   httpOnly: true,
   path: "/",
@@ -13,18 +8,13 @@ const COOKIE_OPTS = {
 };
 
 export async function POST(req: Request) {
-  const body = (await req.json()) as { intent?: string; email?: string };
+  const body = (await req.json()) as { intent?: string };
   const intent = body.intent;
 
   if (intent === "login") {
-    const email =
-      typeof body.email === "string" ? normalizeEmail(body.email) : "";
-    if (!email || !isRegisteredEmail(email)) {
-      return NextResponse.json({ ok: false }, { status: 400 });
-    }
     const res = NextResponse.json({ ok: true });
     res.cookies.set("oauth_intent", "login", COOKIE_OPTS);
-    res.cookies.set("oauth_login_email", email, COOKIE_OPTS);
+    res.cookies.delete("oauth_login_email");
     return res;
   }
 

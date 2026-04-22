@@ -4,7 +4,15 @@ import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 
-export default function SignupForm() {
+const EMAIL_EXISTS_MSG =
+  "Email already exists. Please login with this account.";
+
+type SignupFormProps = {
+  emailExists?: boolean;
+};
+
+export default function SignupForm(props: SignupFormProps) {
+  const { emailExists } = props;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -37,6 +45,11 @@ export default function SignupForm() {
           Continue with Google
         </p>
 
+        {emailExists ? (
+          <p className="mb-4 text-center text-sm text-red-500">
+            {EMAIL_EXISTS_MSG}
+          </p>
+        ) : null}
         {error ? (
           <p className="mb-4 text-center text-sm text-red-500">{error}</p>
         ) : null}
