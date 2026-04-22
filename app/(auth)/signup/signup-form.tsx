@@ -59,7 +59,7 @@ export default function SignupForm(props: SignupFormProps) {
           type="button"
           disabled={loading}
           onClick={handleGoogleSignup}
-          className="flex w-full items-center justify-center gap-3 rounded-lg border border-gray-300 px-4 py-3 transition hover:bg-gray-50 disabled:opacity-60"
+          className="flex w-full cursor-pointer items-center justify-center gap-3 rounded-lg border border-gray-300 px-4 py-3 transition hover:bg-gray-50 disabled:opacity-60"
         >
           <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24" aria-hidden>
             <path
@@ -84,7 +84,7 @@ export default function SignupForm(props: SignupFormProps) {
 
         <p className="mt-4 text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <Link href="/login" className="text-blue-600 hover:underline">
+          <Link href="/login" className="cursor-pointer text-blue-600 hover:underline">
             Login
           </Link>
         </p>
