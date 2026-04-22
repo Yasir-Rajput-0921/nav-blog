@@ -22,6 +22,7 @@ export default function SignupForm(props: SignupFormProps) {
 
     const intentRes = await fetch("/api/auth/oauth-intent", {
       method: "POST",
+      credentials: "same-origin",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ intent: "signup" }),
     });

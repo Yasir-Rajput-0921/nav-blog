@@ -8,14 +8,17 @@ const WRONG_GOOGLE_ACCOUNT_MSG =
   "Could not complete login. Please try again.";
 const SIGNUP_REQUIRED_MSG =
   "Email not found. Please sign up first.";
+const OAUTH_CALLBACK_MSG =
+  "Google could not finish sign-in. Confirm GOOGLE_CLIENT_SECRET in .env (must start with GOCSPX-) and that Authorized redirect URI in Google Cloud includes http://localhost:3000/api/auth/callback/google";
 
 type LoginFormProps = {
   oauthDenied?: boolean;
   signupRequired?: boolean;
+  oauthCallbackFailed?: boolean;
 };
 
 export default function LoginForm(props: LoginFormProps) {
-  const { oauthDenied, signupRequired } = props;
+  const { oauthDenied, signupRequired, oauthCallbackFailed } = props;
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -25,6 +28,7 @@ export default function LoginForm(props: LoginFormProps) {
 
     const intentRes = await fetch("/api/auth/oauth-intent", {
       method: "POST",
+      credentials: "same-origin",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ intent: "login" }),
     });
@@ -52,6 +56,9 @@ export default function LoginForm(props: LoginFormProps) {
           <p className="mb-4 text-center text-sm text-red-500">
             {SIGNUP_REQUIRED_MSG}
           </p>
+        ) : null}
+        {oauthCallbackFailed ? (
+          <p className="mb-4 text-center text-sm text-red-500">{OAUTH_CALLBACK_MSG}</p>
         ) : null}
         {error ? (
           <p className="mb-4 text-center text-sm text-red-500">{error}</p>
