@@ -3,6 +3,14 @@ import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 
+function avatarInitial(name: string | null | undefined): string {
+  const trimmed = name?.trim();
+  if (!trimmed) {
+    return "?";
+  }
+  return trimmed.charAt(0).toUpperCase();
+}
+
 export default function AuthButtons() {
     const { data: session, status } = useSession();
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -10,17 +18,30 @@ export default function AuthButtons() {
     if (status === "loading") return null;
 
     if (session) {
+        const imageUrl = session.user?.image;
+        const hasImage = typeof imageUrl === "string" && imageUrl.length > 0;
+
         return (
             <div className="relative">
                 <button
                     onClick={() => setDropdownOpen(!dropdownOpen)}
                     className="flex items-center gap-2 rounded-xl px-3 py-2 hover:bg-white/70 transition"
                 >
+                    {hasImage ? (
                     <img
-                        src={session.user?.image || ""}
-                        alt="profile"
-                        className="w-8 h-8 rounded-full ring-2 ring-slate-200"
+                        src={imageUrl}
+                        alt=""
+                        referrerPolicy="no-referrer"
+                        className="h-8 w-8 rounded-full object-cover ring-2 ring-slate-200"
                     />
+                    ) : (
+                    <span
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-200 text-xs font-bold text-slate-700 ring-2 ring-slate-200"
+                        aria-hidden
+                    >
+                        {avatarInitial(session.user?.name)}
+                    </span>
+                    )}
                     <span className="text-sm font-semibold text-slate-700 hidden sm:block">
                         {session.user?.name}
                     </span>
