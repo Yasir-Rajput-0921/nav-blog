@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { SITE_SETTINGS_QUERY } from "@/sanity/lib/queries";
-import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
+import AuthButtons from "./AuthButtons";
+import { sanityFetch } from "@/sanity/lib/live";
 
 import type { BlogCategory } from "@/types/post";
 
@@ -69,7 +70,7 @@ export async function SiteHeader(props: SiteHeaderProps) {
   const { categories, activeCategorySlug } = props;
   const navLinks = buildNavLinks(categories);
 
-  const settings = await client.fetch(SITE_SETTINGS_QUERY);
+  const { data: settings } = await sanityFetch({ query: SITE_SETTINGS_QUERY });
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200/90 bg-slate-50/90 backdrop-blur-md supports-[backdrop-filter]:bg-slate-50/75">
       <div className="mx-auto flex w-[min(1100px,92%)] flex-col gap-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:py-5">
@@ -101,6 +102,7 @@ export async function SiteHeader(props: SiteHeaderProps) {
             return <NavPillLink key={link.key} link={link} isActive={active} />;
           })}
         </nav>
+        <AuthButtons />
       </div>
     </header>
   );
