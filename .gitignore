@@ -39,6 +39,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# Local OAuth-registered emails (dev); use a DB in production
-/data/registered-emails.json
