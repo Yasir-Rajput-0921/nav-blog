@@ -25,7 +25,7 @@ export default function AuthButtons() {
             <div className="relative">
                 <button
                     onClick={() => setDropdownOpen(!dropdownOpen)}
-                    className="flex items-center gap-2 rounded-xl px-3 py-2 hover:bg-white/70 transition"
+                    className="flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 transition hover:bg-white/70"
                 >
                     {hasImage ? (
                     <img
@@ -51,7 +51,7 @@ export default function AuthButtons() {
                     <div className="absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-lg border border-slate-200 py-1 z-50">
                         <button
                             onClick={() => signOut({ callbackUrl: "/" })}
-                            className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition"
+                            className="w-full cursor-pointer px-4 py-2 text-left text-sm text-red-500 transition hover:bg-red-50"
                         >
                             Logout
                         </button>
@@ -65,13 +65,13 @@ export default function AuthButtons() {
         <div className="flex items-center gap-2">
             <Link
                 href="/login"
-                className="inline-flex items-center justify-center min-h-10 px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-white/70 hover:text-slate-900 rounded-xl transition duration-200"
+                className="inline-flex min-h-10 cursor-pointer items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold text-slate-600 transition duration-200 hover:bg-white/70 hover:text-slate-900"
             >
                 Login
             </Link>
             <Link
                 href="/signup"
-                className="inline-flex items-center justify-center min-h-10 px-4 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition duration-200"
+                className="inline-flex min-h-10 cursor-pointer items-center justify-center rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition duration-200 hover:bg-blue-700"
             >
                 Signup
             </Link>
