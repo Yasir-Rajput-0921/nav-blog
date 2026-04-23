@@ -79,6 +79,10 @@ export const authOptions: NextAuthOptions = {
           return "/signup?error=EmailExists";
         }
 
+        if (!existingUser && oauthIntent === "login") {
+          return "/login?error=SignupRequired";
+        }
+
         if (!existingUser) {
           await supabaseAdmin.from("users").insert({
             name: user.name,
