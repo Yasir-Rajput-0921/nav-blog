@@ -106,6 +106,13 @@ export default function LoginForm(props: LoginFormProps) {
               )}
             </button>
           </div>
+          <div className="text-right">
+            <Link href="/forgot-password"
+              className="text-right text-sm text-blue-600 hover:underline"
+            >
+              Forgot Password?
+            </Link>
+          </div>
           <button
             type="submit"
             disabled={loading}
