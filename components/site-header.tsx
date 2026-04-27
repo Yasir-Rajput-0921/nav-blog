@@ -41,7 +41,7 @@ function isCurrentLink(linkKey: string, activeCategorySlug?: string): boolean {
 
 function getNavLinkClassName(isActive: boolean): string {
   const base =
-    "inline-flex min-h-10 min-w-[2.75rem] items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold transition-[color,transform,background-color,box-shadow] duration-200 ease-out will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50 motion-reduce:transition-colors";
+    "inline-flex min-h-10 min-w-[2.75rem] shrink-0 items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold transition-[color,transform,background-color,box-shadow] duration-200 ease-out will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50 motion-reduce:transition-colors";
 
   if (isActive) {
     return `${base} bg-white text-blue-800 shadow-sm shadow-slate-900/10 ring-1 ring-slate-200/90`;
@@ -73,10 +73,11 @@ export async function SiteHeader(props: SiteHeaderProps) {
   const { data: settings } = await sanityFetch({ query: SITE_SETTINGS_QUERY });
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200/90 bg-slate-50/90 backdrop-blur-md supports-[backdrop-filter]:bg-slate-50/75">
-      <div className="mx-auto flex w-[min(1100px,92%)] flex-col gap-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:py-5">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-4 sm:px-6 sm:py-5 lg:px-8">
+        <div className="flex items-center justify-between gap-3">
         <Link
           href="/"
-          className="w-fit rounded-lg text-2xl font-extrabold tracking-tight text-slate-900 transition-[color,transform] duration-200 ease-out hover:text-blue-700 motion-reduce:hover:scale-100 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50 sm:text-3xl"
+          className="w-fit shrink-0 rounded-lg text-2xl font-extrabold tracking-tight text-slate-900 transition-[color,transform] duration-200 ease-out hover:text-blue-700 motion-reduce:hover:scale-100 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50 sm:text-3xl"
         >
           {settings?.logo ? (
             <Image
@@ -92,9 +93,13 @@ export async function SiteHeader(props: SiteHeaderProps) {
             </span>
           )}
         </Link>
+          <div className="shrink-0">
+            <AuthButtons />
+          </div>
+        </div>
 
         <nav
-          className="site-nav-pills flex max-w-full flex-wrap gap-1 rounded-2xl border border-slate-200/80 bg-linear-to-b from-slate-100 to-slate-100/80 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]"
+          className="site-nav-pills flex max-w-full items-center gap-1 overflow-x-auto rounded-2xl border border-slate-200/80 bg-linear-to-b from-slate-100 to-slate-100/80 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:flex-wrap md:justify-center md:overflow-visible"
           aria-label="Blog categories"
         >
           {navLinks.map(function renderNavItem(link) {
@@ -102,7 +107,6 @@ export async function SiteHeader(props: SiteHeaderProps) {
             return <NavPillLink key={link.key} link={link} isActive={active} />;
           })}
         </nav>
-        <AuthButtons />
       </div>
     </header>
   );
